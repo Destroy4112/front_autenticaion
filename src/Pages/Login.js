@@ -13,6 +13,7 @@ function Login() {
     const dispatch = useDispatch();
     const [typeInput, setTypeInput] = useState("password");
     const [classDinamic, setClassDinamic] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [usuario, setUsuario] = useState({
         usuario: "",
         clave: ""
@@ -28,23 +29,26 @@ function Login() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
+            setLoading(true);
             const resultado = await validarSesion(usuario);
-            console.log(resultado);
+            setLoading(false);
             if (resultado.token === '0') {
                 setUsuario({ usuario: "", clave: "" })
                 Swal.fire({
-                    icon: 'error',
+                    icon: 'warning',
                     title: 'Error',
                     text: 'Credenciales invalidas',
                     showConfirmButton: false,
                     timer: 1500
                 })
             } else {
-                dispatch(createUser(resultado.usuario[0]));
+                const user = JSON.parse(resultado.usuario);
+                dispatch(createUser(user));
                 crearStorage("token", resultado.token);
                 navigate(PrivateRoutes.DASHBOARD, { replace: true });
             }
         } catch (error) {
+            setLoading(false);
             console.log(error);
         }
     }
@@ -57,6 +61,7 @@ function Login() {
 
     return (
         <FormLogin
+            loading={loading}
             usuario={usuario}
             typeInput={typeInput}
             setTypeInput={setTypeInput}

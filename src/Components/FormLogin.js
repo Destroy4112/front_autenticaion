@@ -4,9 +4,10 @@ import { FaEye } from 'react-icons/fa';
 import { Title } from "./Title";
 import { PublicRoutes } from "../Models/routes";
 import '../Assets/login.css';
+import Spinner from "../Utils/Spinner";
 
 function FormLogin({
-    usuario, typeInput, handleSubmit, handleChange, classDinamic, mostrar
+    usuario, typeInput, handleSubmit, handleChange, classDinamic, mostrar, loading
 }) {
     const titulo = "Login";
     return (
@@ -17,14 +18,14 @@ function FormLogin({
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Usuario</Form.Label>
-                            <Form.Control type="text" name="usuario" autoComplete="usuario"
+                            <Form.Control type="text" name="usuario" autoComplete="usuario" required
                                 onChange={handleChange} placeholder="Ingresa tu usuario" value={usuario.usuario} />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className="mb-3">
                             <Form.Label>Contraseña</Form.Label>
                             <InputGroup>
-                                <Form.Control type={typeInput} name="clave" autoComplete="current-password"
+                                <Form.Control type={typeInput} name="clave" autoComplete="current-password" required
                                     onChange={handleChange} placeholder="Ingresa tu contraseña" value={usuario.clave} />
                                 <Button type='button' className={`btn-eye ${classDinamic ? 'btn-active' : ''} `}
                                     onClick={mostrar}>
@@ -33,7 +34,7 @@ function FormLogin({
                             </InputGroup>
                         </Form.Group>
                         <Button variant="primary" type="submit" className="btn-submit">
-                            Iniciar sesión
+                            {loading ? <Spinner/> : "Iniciar sesión"}
                         </Button>
                     </Form>
                     <div className="container-accioones">

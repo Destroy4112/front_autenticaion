@@ -1,5 +1,5 @@
-const URL_AUTH = 'http://localhost:8080/api/login';
-const URL_USERS = 'http://localhost:8080/api/usuarios';
+const URL_AUTH = 'http://localhost:8080/api/auth';
+const URL_REGISTER = 'http://localhost:8080/api/auth/register';
 const URL_USERS_CONSULTA = 'http://localhost:8080/api/usuarios/';
 
 export async function validarSesion(user) {
@@ -22,8 +22,8 @@ export async function registrarUsuario(user) {
         },
         body: JSON.stringify(user)
     };
-    const res = await fetch(URL_USERS, options);
-    return await res.json();
+    const res = await fetch(URL_REGISTER, options);
+    return await res.text();
 }
 
 export async function consultarUsuario(identificacion) {

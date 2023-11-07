@@ -3,24 +3,22 @@ import { FormRegistro } from '../Components/FormRegistro';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registrarUsuario } from '../Services/login';
-import { crearStorage } from '../Utils/localStorage';
-import { useDispatch } from 'react-redux';
-import { createUser } from '../Redux/userSlice';
 import Swal from 'sweetalert2';
-import { PrivateRoutes } from '../Models/routes';
+import { PublicRoutes } from '../Models/routes';
 
 function Registrarse() {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [typeInput, setTypeInput] = useState("password");
     const [classDinamic, setClassDinamic] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [usuario, setUsuario] = useState({
         nombres: "",
         apellidos: "",
         identificacion: "",
         usuario: "",
-        clave: ""
+        clave: "",
+        rol:"ADMIN"
     })
     const handleChange = ({ target }) => {
         setUsuario({
@@ -31,18 +29,19 @@ function Registrarse() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
+            setLoading(true);
             const resultado = await registrarUsuario(usuario);
+            setLoading(false);
             console.log(resultado);
-            if (resultado.token === '0') {
+            if (resultado === "error") {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
+                    icon: 'warning',
+                    title: 'No completado!',
                     text: 'Ya se encuentra registrado un usuario con esa identificacion o usuario',
                     showConfirmButton: false,
                     timer: 1500
                 });
             } else {
-                const userParsed = JSON.parse(resultado.usuario);
                 Swal.fire({
                     icon: 'success',
                     title: 'Hecho',
@@ -50,11 +49,10 @@ function Registrarse() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                dispatch(createUser(userParsed));
-                crearStorage("token", resultado.token);
-                navigate(PrivateRoutes.DASHBOARD, { replace: true });
+                navigate(PublicRoutes.LOGIN, { replace: true });
             }
         } catch (error) {
+            setLoading(false);
             console.log(error);
         }
     }
@@ -67,6 +65,7 @@ function Registrarse() {
 
     return (
         <FormRegistro
+            loading={loading}
             typeInput={typeInput}
             setTypeInput={setTypeInput}
             handleSubmit={handleSubmit}

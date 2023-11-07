@@ -16,7 +16,7 @@ function FormRecuperacion({ identificacion, handleSubmit, handlechange }) {
                     <Title titulo={titulo} />
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control type="text" name="identificacion" autoComplete="identificacion"
+                            <Form.Control type="text" name="identificacion" autoComplete="identificacion" required
                                 onChange={handlechange} placeholder="Ingresa tu numero de identificacion" value={identificacion} />
                         </Form.Group>
                         <Button variant="primary" type="submit" className="btn-submit">

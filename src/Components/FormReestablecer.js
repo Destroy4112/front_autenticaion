@@ -18,7 +18,7 @@ function FormReestablecer({
                     <p> {usuario.nombres + " " + usuario.apellidos} </p>
                     <Form onSubmit={handlesubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control type="text" name="clave" autoComplete="clave"
+                            <Form.Control type="text" name="clave" autoComplete="clave" required
                                 onChange={handleChange} placeholder="Ingresa tu nueva contraseña" />
                         </Form.Group>
                         <Button variant="primary" type="submit" className="btn-submit">
